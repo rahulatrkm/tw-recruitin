@@ -16,34 +16,39 @@ import sys
 #  1. STRING s
 #  2. INTEGER_ARRAY queries
 #
-def binary_search(words, low, high, key):
-    if high < low:
-        return -1
-
-    mid = (low + high) // 2 # the // operation does integer division
-
-    if words[mid] < key:
-        return binary_search(words, mid + 1, high, key) # check right of mid
-    elif words[mid] > key:
-        return binary_search(words, low, mid - 1, key) # check left of mid
-    else:
-        return mid # we found the word at mid
-
 def closest(s, queries):
     # Write your code here
+    # hash map for string
     sd = dict()
-    for i,j in enumerate(s):
-        if j in sd:
-            sd[j].append(i)
+    # index for insertion in list
+    ind = dict()
+    i = 0
+    j = len(s)-1
+    while (i<=j):
+        if s[i] in sd:
+            sd[s[i]].insert(ind[s[i]],i)
+            ind[s[i]] += 1
         else:
-            sd[j] = [i]
+            sd[s[i]] = [i]
+            ind[s[i]] = 1
+        if i != j:
+            if s[j] in sd:
+                sd[s[j]].insert(ind[s[j]],j)
+            else:
+                sd[s[j]] = [j]
+                ind[s[j]] = 0
+        print(ind)
+        i += 1
+        j -= 1
+    print(sd)
+
     a = []
     for query in queries:
         temp = sd[s[query]]
+        t1 = temp.index(query)
         if len(temp) == 1:
             a.append(-1)
         else:
-            t1 = binary_search(temp, 0, (len(temp)-1), query)
             if t1 == 0:
                 a.append(temp[1])
             elif t1 == (len(temp)-1):

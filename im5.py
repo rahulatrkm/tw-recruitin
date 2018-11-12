@@ -7,7 +7,6 @@ def countMatches(grid1, grid2):
         for j in range(l):
             s[i][j] = grid1[i][j] + grid2[i][j]
 
-    
     return count
 
 grid1_count = int(input().strip())
